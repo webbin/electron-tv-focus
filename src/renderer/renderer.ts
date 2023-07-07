@@ -1,0 +1,6 @@
+
+
+
+const appExit = () => {
+  // window.electronApp.
+}

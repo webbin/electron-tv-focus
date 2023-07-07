@@ -55,6 +55,7 @@ const onBlur = (event: Event) => {
     :style="customStyle"
     @onFocus="onFocused"
     @onBlur="onBlur"
+    @click="$emit('onClick')"
   >
     <span :style="titleStyle" class="button_title">{{ title }}</span>
   </div>

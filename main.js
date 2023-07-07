@@ -1,29 +1,43 @@
+/* eslint-disable no-undef */
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, ipcMain, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 
 Menu.setApplicationMenu(null);
 
 function createWindow() {
+  // We cannot require the screen module until the app is ready.
+  const { screen } = require('electron');
+
+  // Create a window that fills the screen's available work area.
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width,
+    height,
+    frame: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
   });
 
+  ipcMain.on('app-exit', (event) => {
+    app.quit();
+  });
+
   // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
   if (process.env.VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
+    // Open the DevTools.
+    mainWindow.webContents.openDevTools();
+    // console.log('create window ', process.env);
   } else {
     // Load your file
     mainWindow.loadFile('dist/index.html');
+    mainWindow.webContents.openDevTools();
   }
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished

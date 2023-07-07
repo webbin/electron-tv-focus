@@ -8,3 +8,13 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+export interface IElectronAPI {
+  appExit: () => void,
+}
+
+declare global {
+  interface Window {
+    electronApp: IElectronAPI
+  }
+}

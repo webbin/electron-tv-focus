@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getCurrentInstance, ref } from 'vue';
 import { RouterLink, RouterView } from 'vue-router';
+import CommonButton from '@/components/CommonButton.vue';
+
 const instance = getCurrentInstance();
 if (instance && instance.proxy) {
   // @ts-ignore
@@ -53,6 +55,10 @@ const startTransform = () => {
   });
   console.log(JSON.stringify(data));
 };
+
+const exitApp = () => {
+  window.electronApp.appExit();
+};
 </script>
 
 <template>
@@ -66,6 +72,8 @@ const startTransform = () => {
     <RouterLink to="/movies">
       <div id="about_first_link" v-focusable class="link">Go To Movies Page</div>
     </RouterLink>
+
+    <CommonButton title="退出" @on-click="exitApp"> </CommonButton>
   </div>
 </template>
 
